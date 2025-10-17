@@ -1,6 +1,9 @@
-[package]
-name = "circuits"
-type = "bin"
-authors = [""]
+[workspace]
+members = [
+    "main/nydus-entry"
+]
 
-[dependencies]
+[workspace.dependencies]
+
+
+target_dir = "./main"

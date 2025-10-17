@@ -1,0 +1,10 @@
+[package]
+name = "indexed_merkle_tree"
+type = "lib"
+authors = [""]
+compiler_version = ">=0.23.0"
+
+[dependencies]
+poseidon = { path = "../poseidon" }
+
+
