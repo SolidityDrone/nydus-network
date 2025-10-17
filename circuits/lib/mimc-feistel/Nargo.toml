@@ -1,0 +1,9 @@
+[package]
+name = "mimc_feistel"
+type = "lib"
+authors = ["Drone"]
+compiler_version = ">=0.35.0"
+
+[dependencies]
+
+
