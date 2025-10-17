@@ -1,7 +1,8 @@
 [workspace]
 members = [
     "main/nydus-entry",
-    "main/nydus-send"
+    "main/nydus-send", 
+    "main/nydus-absorb"
 ]
 
 [workspace.dependencies]

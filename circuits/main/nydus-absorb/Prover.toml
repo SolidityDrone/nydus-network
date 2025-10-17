@@ -1,0 +1,42 @@
+
+user_key = "0xfedcba0987654321fedcba0987654321fedcba0987654321"
+
+previous_nonce = "0x00"
+
+previous_personal_imt_root = "0x2920bb4bc27a997910a612bf93a3bbe3e27ae3414cdfaa2bed3c041afecef784"
+
+imt_leaf_proof = ["0x2f70bd76da4dea7da5cb00c3f108dc8a326b69be361ed414f7392ae76fe9d756", "0x2b531be43bcdbfb0014cd8842cf18be46bcb09cfbcccb467cf5f27190a80e480", "0x0c8d11fe4e37bac6ca7f730a6dd8cf8e5b5eb43a0ba455682556c7e9edc8bf8b", "0x2616182a5261077406bad05306c3ac575664f3934af8f35572a6303909002247", "0x09b61b4d3868115549b3746d1d92583c079884ebffe17d5167bf385ed6408e84", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00"]
+
+current_balance = "0x64"
+
+imt_leaf_idx = "0x01"
+
+token_address = "0x58002bee8f43bf203964d38c54fa03e62d615959fa"
+
+previous_spent_amount = "0x00"
+
+spent_leaf_proof = ["0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00"]
+
+c_tot = ["0x272f98a3bdf63f4aa30d80365b4442ab19af4652eae8cb97854dff7066d1ef01", "0x0baef8a7da7ee964ef6a45410792fa0c1abcb98262e58c60bab7447287335483"]
+
+c_inner_balance = ["0x272f98a3bdf63f4aa30d80365b4442ab19af4652eae8cb97854dff7066d1ef01", "0x0baef8a7da7ee964ef6a45410792fa0c1abcb98262e58c60bab7447287335483"]
+
+c_outer_balance = ["0x00", "0x00"]
+
+c_inner_m = "0x32"
+
+c_inner_r = "0x5555555555555555"
+
+c_outer_m = "0x00"
+
+c_outer_r = "0x00"
+
+historical_root = "0x11ca16846604090de11da5530bbbe0f94b8af076084c21c32ee9a7d475a178c3"
+
+c_tot_leaf_proof = ["0x0fcd5c1a791b6f22be3bcd9331fb8cfe3736c136cbe1fb930efaf10f1b680583", "0x1fa6aa372cc42639be87d139fb62b30b837188c5325bf6eda5cbd0832b287f7a", "0x184896dfd2fe68136552a5afc5badee4e748a3c05e21926b2a5ef63b5d42cc6d", "0x1cb66c1686ecd562026936a47ed476d7c8004d96cf966b04fae5f5b106284ad4", "0x0220e37936ca95534370e1bfe35c1b5fe6555e5552d39dfab844b7f3ddce46a9", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00", "0x00"]
+
+c_tot_leaf_value = "0x272f98a3bdf63f4aa30d80365b4442ab19af4652eae8cb97854dff7066d1ef01"
+
+c_tot_leaf_key = "9605614438477590273"
+
+c_tot_leaf_idx = "1"
