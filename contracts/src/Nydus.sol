@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-contract Nydus {
+import {IHasher} from "./IHasher.sol";
+
+contract Nydus  {
     uint256 public number;
 
     function setNumber(uint256 newNumber) public {
