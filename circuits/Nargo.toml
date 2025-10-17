@@ -2,7 +2,8 @@
 members = [
     "main/nydus-entry",
     "main/nydus-send", 
-    "main/nydus-absorb"
+    "main/nydus-absorb",
+    "lib/poseidon-ctr-encryption"
 ]
 
 [workspace.dependencies]

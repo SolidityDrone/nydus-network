@@ -429,3 +429,64 @@ fn test_keystream_uniformity() {
     assert(keystream2 != keystream5);
     assert(keystream3 != keystream5);
 }
+
+// ===== TEST FOR TYPESCRIPT COMPARISON =====
+
+/// Get test values for TypeScript comparison
+pub fn get_poseidon_ctr_test_values() -> (Field, Field, Field, Field, Field, Field, Field, Field) {
+    // Test values to compare with TypeScript implementation
+    let amount = 1000 as Field;
+    let token_address = 12345 as Field;
+    let ref = 67890 as Field;
+    let encryption_key = Poseidon2::hash([999 as Field], 1);
+    
+    // Encrypt all fields
+    let (encrypted_amount, encrypted_token_address, encrypted_ref, encrypted_key) = 
+        poseidon_encrypt_all_fields(amount, token_address, ref, encryption_key);
+    
+    // Return all values for external testing
+    (amount, token_address, ref, encryption_key, encrypted_amount, encrypted_token_address, encrypted_ref, encrypted_key)
+}
+
+#[test]
+fn test_poseidon_ctr_encryption_values() {
+    // Test values to compare with TypeScript implementation
+    let amount = 1000 as Field;
+    let token_address = 12345 as Field;
+    let ref = 67890 as Field;
+    let encryption_key = Poseidon2::hash([999 as Field], 1);
+    
+    // Encrypt all fields
+    let (encrypted_amount, encrypted_token_address, encrypted_ref, encrypted_key) = 
+        poseidon_encrypt_all_fields(amount, token_address, ref, encryption_key);
+    
+    // Decrypt all fields
+    let decrypted_amount = poseidon_ctr_decrypt(encrypted_amount, encryption_key, 0);
+    let decrypted_token_address = poseidon_ctr_decrypt(encrypted_token_address, encryption_key, 1);
+    let decrypted_ref = poseidon_ctr_decrypt(encrypted_ref, encryption_key, 2);
+    let decrypted_key = poseidon_ctr_decrypt(encrypted_key, encryption_key, 3);
+    
+    // Verify round-trip encryption/decryption
+    assert(decrypted_amount == amount);
+    assert(decrypted_token_address == token_address);
+    assert(decrypted_ref == ref);
+    assert(decrypted_key == encryption_key);
+    
+ 
+    println("Encrypted amount: 0x{:x}");
+    println(encrypted_amount);
+    println("Encrypted token address: 0x{:x}");
+    println(encrypted_token_address);
+    println("Encrypted ref: 0x{:x}");
+    println(encrypted_ref);
+    println("Encrypted key: 0x{:x}");
+    println(encrypted_key);
+    println("Decrypted amount: 0x{:x}");
+    println(decrypted_amount);
+    println("Decrypted token address: 0x{:x}");
+    println(decrypted_token_address);
+    println("Decrypted ref: 0x{:x}");
+    println(decrypted_ref);
+    println("Decrypted key: 0x{:x}");
+    println(decrypted_key);
+}
