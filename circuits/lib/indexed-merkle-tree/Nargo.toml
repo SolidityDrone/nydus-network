@@ -6,5 +6,5 @@ compiler_version = ">=0.23.0"
 
 [dependencies]
 poseidon = { path = "../poseidon" }
-
+mimc_feistel = { path = "../mimc-feistel" }
 

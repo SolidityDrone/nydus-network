@@ -10,7 +10,6 @@ use dep::indexed_merkle_tree::{
     insert_item,
     verify_proof
 };
-// Removed unused import
 mod test;
 
 // === EXTENDED PEDERSEN COMMITMENT WITH DOMAIN SEPARATION ===
@@ -63,20 +62,153 @@ fn from_field(scalar: Field) -> EmbeddedCurveScalar {
 
 
 fn main(
-
-) -> pub () {
+    user_key: Field,
+    token_address: pub Field,
+    amount: pub Field,
+    current_amount: pub Field,
+    previous_nonce: pub Field, 
+    previous_personal_imt_root: pub Field,
+    imt_leaf_proof: pub [Field; 32], 
+    receiver_public_key: pub [Field; 2],
+    
+    
+    master_tree_root: pub Field,                    // Master tree root from contract
+    personal_imt_root_proof: pub [Field; 32],      // Proof that personal_imt_root is a leaf in master tree
+    personal_imt_root_leaf_value: pub Field,       // The actual value of personal_imt_root leaf
+    personal_imt_root_leaf_key: pub Field,          // The key for the personal_imt_root leaf in master tree
+    personal_imt_root_leaf_idx: pub Field,          // The index of the personal_imt_root leaf in master tree
+) -> pub (Field, Field, [Field; 2], [Field; 2], [Field; 2]) {
+    // === TWO-LEVEL TREE VERIFICATION ===
+    // 1. Verify that personal_imt_root is a valid leaf in the master tree
+    // 2. Verify the user's balance in their personal IMT
+    // 3. Perform the send operation
+    
+    // NEW: Verify that personal_imt_root is a valid leaf in the master tree
+    // 1. Create the personal_imt_root leaf for verification
+    let personal_imt_root_leaf = Leaf {
+        key: personal_imt_root_leaf_key as u64,
+        next_idx: 0,
+        next_key: 0,
+        value: personal_imt_root_leaf_value
+    };
+    
+    // 2. Verify that personal_imt_root_leaf_value matches the personal_imt_root
+    assert(personal_imt_root_leaf_value == previous_personal_imt_root, "Personal IMT root leaf value doesn't match provided personal_imt_root");
+    
+    // 3. Verify the personal_imt_root proof against the master tree root
+    // Use the provided leaf index from the proof generation
+    let personal_imt_root_proof = Proof {
+        leaf_idx: personal_imt_root_leaf_idx as u32, // Use the provided leaf index
+        leaf: personal_imt_root_leaf,
+        root: master_tree_root,
+        siblings: personal_imt_root_proof
+    };
+    
+    // 4. Verify the personal_imt_root proof is valid
+    let personal_imt_root_proof_valid = verify_proof(personal_imt_root_proof);
+    assert(personal_imt_root_proof_valid, "Personal IMT root proof verification failed");
+    
+    // 5. The master_tree_root is now verified to be a valid root from the contract
+    // This proves that personal_imt_root was a valid leaf in the master tree
+    
+    assert((current_amount as u64) >= (amount as u64));
+    let nonce = previous_nonce + 1 as Field;
+    let previous_nonce_commitment = 
+        Poseidon2::hash([user_key, previous_nonce as Field], 2);
   
+    let new_nonce_commitment = 
+        Poseidon2::hash([user_key, previous_nonce_commitment + 1 as Field], 2);
+    
+    // === PERSONAL IMT VERIFICATION ===
+    // Now verify the user's balance in their personal IMT (second level verification)
+    
+    // Calculate new balance after spending
+    let new_balance = (current_amount as u64 - amount as u64) as Field;
+    
+    // Create a proof from the provided siblings to verify the current balance
+    // The proof contains the actual leaf structure from the tree
+    let current_leaf = Leaf {
+        key: token_address as u64,
+        next_idx: 0, 
+        next_key: 0, 
+        value: current_amount
+    };
+    
+    let current_proof = Proof {
+        leaf_idx: 1, // The leaf is at index 1 (after the zero item)
+        leaf: current_leaf,
+        root: previous_personal_imt_root,
+        siblings: imt_leaf_proof
+    };
+    
+    // Verify that the current balance proof is valid
+    assert(verify_proof(current_proof), "Current balance proof should be valid");
+    
+    // Update the leaf with the new balance
+    let updated_leaf = Leaf {
+        key: token_address as u64,
+        next_idx: 0,
+        next_key: 0,
+        value: new_balance
+    };
+    
+    // Removed unused variable
+    
+    // For now, we'll compute the new root by creating a simple tree with the updated balance
+    // In a real implementation, you would update the existing tree structure
+    let mut leaves: [Leaf; 32] = [Leaf { key: 0, next_idx: 0, next_key: 0, value: 0 }; 32];
+    let mut num_leaves = 1;
+    
+    let (insertion_result, _, _) = insert_item(
+        leaves,
+        num_leaves,
+        token_address as u64,
+        new_balance
+    );
+    
+    // Create new personal indexed merkle tree root hash
+    let new_personal_imt_root = insertion_result.root_after;
+    
+    // Create new main tree commitment
+    let new_main_tree_commit = Poseidon2::hash([new_personal_imt_root, new_nonce_commitment], 2);
+
+    // Perform Diffie-Hellman key exchange
+    let (sender_pub_key, shared_key) = perform_dh_key_exchange(user_key + nonce as Field, receiver_public_key);
+
+
+    // === POSEIDON CTR MODE ENCRYPTION ===
+    // Encrypt each field separately using Poseidon in CTR mode
+    
+    // Create shared key hash for encryption
+    let shared_key_hash = Poseidon2::hash([shared_key], 1);
+    
+    // Encrypt only amount and token_address (2 fields)
+    let encrypted_amount = poseidon_ctr_encrypt(amount, shared_key_hash, 0);
+    let encrypted_token_address = poseidon_ctr_encrypt(token_address, shared_key_hash, 1);
+    let encrypted_note = [encrypted_amount, encrypted_token_address];
+    
+    // For encrypted_event, use view key approach (like in nydus-entry) to encrypt only 2 fields
+    let user_key_hash = Poseidon2::hash([user_key], 1);
+    let view_string = 0x76696577696e675f6b6579 as Field;
+    let view_key = Poseidon2::hash([view_string, user_key_hash], 2);
+    
+    // Encrypt only amount and token_address using view key
+    let encrypted_amount = poseidon_ctr_encrypt(amount, view_key, 0);
+    let encrypted_token_address = poseidon_ctr_encrypt(token_address, view_key, 1);
+    
+    // === PEDERSEN COMMITMENT FOR RECEIPT ===
+    // Create token-specific Pedersen commitment: C = m*G_token + r*H_token
+    // Where m = amount, r = shared_key_hash (blinding factor)
+    let receipt_commitment = pedersen_commitment_token(amount, shared_key_hash, token_address);
 
     (   
-    
+        new_nonce_commitment,
+        new_main_tree_commit,
+        encrypted_note,
+        [receipt_commitment.x, receipt_commitment.y],        
+        sender_pub_key
     )
 }
-
-
-
-// Removed unused function
-
-// Removed unused function
 
 
 
