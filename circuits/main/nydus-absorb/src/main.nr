@@ -236,7 +236,7 @@ fn main(
     (    
         new_nonce_commitment,
         new_main_tree_commit,
-        new_personal_imt_root
+        new_personal_imt_root //TODO: encrypt this later
     )
 }
 

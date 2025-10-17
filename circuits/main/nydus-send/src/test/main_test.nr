@@ -785,9 +785,7 @@ fn test_generate_nydus_absorb_with_historical_root() {
     std::print(c_outer_r);
     std::println("\"");
     std::println("");
-    
-    // NEW: Historical root verification arguments
-    std::println("// NEW: Historical root verification arguments");
+
     std::print("historical_root = \"");
     std::print(historical_root);
     std::println("\"");
