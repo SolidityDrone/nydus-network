@@ -46,7 +46,7 @@ fn main(
     (        
         main_indexed_tree_commitment,                      
         nonce_commitment,
-        encrypted_event                  
+        encrypted_event             
     )
 }
 

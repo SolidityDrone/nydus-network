@@ -46,7 +46,7 @@ fn main(
     c_outer_r: Field,            // Outer balance blinding factor
     
     //  Historical root verification arguments
-    historical_root: Field,                   // Historical root from contract
+    historical_root: pub Field,                   // Historical root from contract
     c_tot_leaf_proof: [Field; 32],          // Proof that c_tot is a leaf in historical tree
     c_tot_leaf_value: Field,                 // The actual value of c_tot leaf (should match c_tot commitment)
     c_tot_leaf_key: Field,                   // The key for the c_tot leaf in historical tree

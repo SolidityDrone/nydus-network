@@ -3,6 +3,7 @@ name = "nydus_entry"
 type = "bin"
 authors = ["Drone"]
 
+
 [dependencies]
 poseidon = { path = "../../lib/poseidon" }
 poseidon_ctr_encryption = { path = "../../lib/poseidon-ctr-encryption" }

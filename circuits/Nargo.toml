@@ -3,10 +3,16 @@ members = [
     "main/nydus-entry",
     "main/nydus-send", 
     "main/nydus-absorb",
+    "main/nydus-absorb-send",
     "lib/poseidon-ctr-encryption"
 ]
 
 [workspace.dependencies]
+
+
+
+
+compiler_version = "1.0.0-beta.3"
 
 
 target_dir = "./main"

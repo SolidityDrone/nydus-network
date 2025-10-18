@@ -63,20 +63,20 @@ fn from_field(scalar: Field) -> EmbeddedCurveScalar {
 
 fn main(
     user_key: Field,
-    token_address: pub Field,
-    amount: pub Field,
-    current_amount: pub Field,
-    previous_nonce: pub Field, 
-    previous_personal_imt_root: pub Field,
-    imt_leaf_proof: pub [Field; 32], 
-    receiver_public_key: pub [Field; 2],
+    token_address: Field,
+    amount: Field,
+    current_amount: Field,
+    previous_nonce: Field, 
+    previous_personal_imt_root: Field,
+    imt_leaf_proof: [Field; 32], 
+    receiver_public_key: [Field; 2],
     
     
     master_tree_root: pub Field,                    // Master tree root from contract
-    personal_imt_root_proof: pub [Field; 32],      // Proof that personal_imt_root is a leaf in master tree
-    personal_imt_root_leaf_value: pub Field,       // The actual value of personal_imt_root leaf
-    personal_imt_root_leaf_key: pub Field,          // The key for the personal_imt_root leaf in master tree
-    personal_imt_root_leaf_idx: pub Field,          // The index of the personal_imt_root leaf in master tree
+    personal_imt_root_proof: [Field; 32],      // Proof that personal_imt_root is a leaf in master tree
+    personal_imt_root_leaf_value:  Field,       // The actual value of personal_imt_root leaf
+    personal_imt_root_leaf_key:  Field,          // The key for the personal_imt_root leaf in master tree
+    personal_imt_root_leaf_idx:  Field,          // The index of the personal_imt_root leaf in master tree
 ) -> pub (Field, Field, [Field; 2], [Field; 2], [Field; 2]) {
     // === TWO-LEVEL TREE VERIFICATION ===
     // 1. Verify that personal_imt_root is a valid leaf in the master tree
